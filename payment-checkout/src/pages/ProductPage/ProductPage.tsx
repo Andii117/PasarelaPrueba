@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
 import { resetCheckout, setFormData } from "../../store/slices/checkoutSlice";
 import { resetTransaction } from "../../store/slices/transactionSlice";
 import type { Product } from "../../types";
+import CheckoutModal from "../CheckoutModal/CheckoutModal";
 import styles from "./ProductPage.module.css";
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { products } = useSelector((state: RootState) => state.product);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(resetCheckout());
@@ -25,7 +27,7 @@ const ProductPage = () => {
         productPrice: product.price,
       }),
     );
-    navigate("/checkout");
+    setModalOpen(true);
   };
 
   return (
@@ -37,10 +39,25 @@ const ProductPage = () => {
         </span>
       </div>
       <div className={styles.container}>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} onBuy={handleBuy} />
+        {products.map((product, index) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onBuy={handleBuy}
+            priority={index === 0}
+          />
         ))}
       </div>
+
+      {modalOpen && (
+        <CheckoutModal
+          onClose={() => setModalOpen(false)}
+          onConfirm={() => {
+            setModalOpen(false);
+            navigate("/summary");
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -48,9 +65,11 @@ const ProductPage = () => {
 const ProductCard = ({
   product,
   onBuy,
+  priority,
 }: {
   product: Product;
   onBuy: (p: Product) => void;
+  priority: boolean;
 }) => {
   const isOutOfStock = product.stock === 0;
   const isLowStock = product.stock > 0 && product.stock <= 5;
@@ -69,6 +88,9 @@ const ProductCard = ({
           src={product.imageUrl}
           alt={product.name}
           className={`${styles.image} ${isOutOfStock ? styles.imageOutOfStock : ""}`}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
+          decoding={priority ? "sync" : "async"}
         />
       </div>
 

@@ -29,7 +29,6 @@ const ProductPage = () => {
 
   return (
     <div style={styles.page}>
-      {/* Header */}
       <div style={styles.header}>
         <h1 style={styles.headerTitle}>🛒 Mi Tienda</h1>
         <span style={styles.headerSub}>
@@ -37,7 +36,6 @@ const ProductPage = () => {
         </span>
       </div>
 
-      {/* Lista de productos */}
       <div style={styles.container}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} onBuy={handleBuy} />
@@ -59,13 +57,11 @@ const ProductCard = ({
 
   return (
     <div style={styles.card}>
-      {/* Badge de stock bajo */}
       {isLowStock && (
         <div style={styles.badgeLowStock}>¡Solo quedan {product.stock}!</div>
       )}
       {isOutOfStock && <div style={styles.badgeOutOfStock}>Agotado</div>}
 
-      {/* Imagen */}
       <div style={styles.imageWrapper}>
         <img
           src={product.imageUrl}
@@ -77,20 +73,14 @@ const ProductCard = ({
         />
       </div>
 
-      {/* Contenido */}
       <div style={styles.cardBody}>
-        {/* Nombre */}
         <h2 style={styles.productName}>{product.name}</h2>
-
-        {/* Descripción */}
         <p style={styles.description}>{product.description}</p>
 
-        {/* Envío gratis */}
         <div style={styles.shipping}>
           🚚 <span style={styles.shippingText}>Envío gratis</span>
         </div>
 
-        {/* Precio */}
         <div style={styles.priceRow}>
           <span style={styles.price}>
             ${product.price.toLocaleString("es-CO")}
@@ -98,14 +88,12 @@ const ProductCard = ({
           <span style={styles.currency}>COP</span>
         </div>
 
-        {/* Cuotas */}
         <p style={styles.installments}>
           en 3 cuotas de $
           {Math.round(product.price / 3).toLocaleString("es-CO")} COP sin
           interés
         </p>
 
-        {/* Stock */}
         <div style={styles.stockRow}>
           <div
             style={{
@@ -131,7 +119,6 @@ const ProductCard = ({
           </span>
         </div>
 
-        {/* Botón */}
         <button
           style={{
             ...styles.button,

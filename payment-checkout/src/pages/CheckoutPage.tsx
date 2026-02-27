@@ -29,6 +29,14 @@ const CheckoutPage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const brand = detectBrand(form.cardNumber.replace(/\s/g, ""));
 
+  // ── CAMBIO 1: handleChange guarda en Redux + localStorage en cada keystroke ──
+  const handleChange = (key: keyof typeof form, value: string) => {
+    const updated = { ...form, [key]: value };
+    setForm(updated);
+    dispatch(setFormData(updated)); // escribe en Redux Y localStorage
+  };
+  // ────────────────────────────────────────────────────────────────────────────
+
   const validate = (): boolean => {
     const e: Record<string, string> = {};
     const clean = form.cardNumber.replace(/\s/g, "");
@@ -49,11 +57,12 @@ const CheckoutPage = () => {
 
   const handleContinue = () => {
     if (!validate()) return;
-    dispatch(setFormData(form));
+    dispatch(setFormData(form)); // garantiza consistencia final
     dispatch(setStep(3));
     navigate("/summary");
   };
 
+  // ── CAMBIO 2: onChange ahora llama handleChange en lugar de setForm directo ──
   const field = (
     label: string,
     key: keyof typeof form,
@@ -70,15 +79,15 @@ const CheckoutPage = () => {
           ...styles.input,
           borderColor: errors[key] ? "#f44336" : "#e0e0e0",
         }}
-        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+        onChange={(e) => handleChange(key, e.target.value)} // ← CAMBIO 2
       />
       {errors[key] && <span style={styles.errorText}>⚠ {errors[key]}</span>}
     </div>
   );
+  // ────────────────────────────────────────────────────────────────────────────
 
   return (
     <div style={styles.page}>
-      {/* Header */}
       <div style={styles.header}>
         <button onClick={() => navigate("/")} style={styles.backBtn}>
           ←
@@ -88,7 +97,6 @@ const CheckoutPage = () => {
       </div>
 
       <div style={styles.container}>
-        {/* Resumen del producto seleccionado */}
         <div style={styles.productSummary}>
           <div style={styles.productSummaryLeft}>
             <span style={styles.productSummaryIcon}>🛍️</span>
@@ -102,13 +110,11 @@ const CheckoutPage = () => {
           <span style={styles.productSummaryBadge}>x1</span>
         </div>
 
-        {/* Sección entrega */}
         <div style={styles.section}>
           <div style={styles.sectionHeader}>
             <span style={styles.sectionIcon}>📦</span>
             <h2 style={styles.sectionTitle}>Datos de entrega</h2>
           </div>
-
           {field("Nombre completo", "deliveryName", "text", "Ej: Juan Pérez")}
           {field(
             "Dirección",
@@ -120,7 +126,6 @@ const CheckoutPage = () => {
           {field("Teléfono", "deliveryPhone", "tel", "Ej: 3001234567")}
         </div>
 
-        {/* Sección tarjeta */}
         <div style={styles.section}>
           <div style={styles.sectionHeader}>
             <span style={styles.sectionIcon}>💳</span>
@@ -136,14 +141,12 @@ const CheckoutPage = () => {
               </div>
             )}
           </div>
-
           {field(
             "Número de tarjeta",
             "cardNumber",
             "tel",
             "0000 0000 0000 0000",
           )}
-
           <div style={styles.row}>
             <div style={{ flex: 1, marginRight: 8 }}>
               {field("Vencimiento", "cardExpiry", "text", "MM/AA")}
@@ -152,7 +155,6 @@ const CheckoutPage = () => {
               {field("CVV", "cardCvv", "password", "123")}
             </div>
           </div>
-
           {field(
             "Nombre del titular",
             "cardHolder",
@@ -161,7 +163,6 @@ const CheckoutPage = () => {
           )}
         </div>
 
-        {/* Info seguridad */}
         <div style={styles.securityInfo}>
           <span>🔒</span>
           <p style={styles.securityText}>
@@ -170,7 +171,6 @@ const CheckoutPage = () => {
           </p>
         </div>
 
-        {/* Botón continuar */}
         <button style={styles.continueBtn} onClick={handleContinue}>
           Confirmar compra
         </button>

@@ -3,21 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
 import { resetCheckout, setFormData } from "../../store/slices/checkoutSlice";
-import { resetTransaction } from "../../store/slices/transactionSlice";
 import type { Product } from "../../types";
 import CheckoutModal from "../CheckoutModal/CheckoutModal";
 import styles from "./ProductPage.module.css";
+import { resetTransaction } from "../../store/slices/transactionSlice";
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { products } = useSelector((state: RootState) => state.product);
   const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(resetCheckout());
-    dispatch(resetTransaction());
-  }, [dispatch]);
 
   const handleBuy = (product: Product) => {
     dispatch(
@@ -51,7 +46,11 @@ const ProductPage = () => {
 
       {modalOpen && (
         <CheckoutModal
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            dispatch(resetCheckout());
+            dispatch(resetTransaction());
+            setModalOpen(false);
+          }}
           onConfirm={() => {
             setModalOpen(false);
             navigate("/summary");

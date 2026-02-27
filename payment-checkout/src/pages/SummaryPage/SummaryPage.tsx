@@ -8,12 +8,14 @@ import styles from "./SummaryPage.module.css";
 
 const BASE_FEE = 3000;
 const DELIVERY_FEE = 8000;
+const API_URL = "http://localhost:3001";
 
 const SummaryPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const checkout = useSelector((state: RootState) => state.checkout);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const total = checkout.productPrice + BASE_FEE + DELIVERY_FEE;
 
@@ -58,6 +60,8 @@ const SummaryPage = () => {
           <span>${total.toLocaleString()} COP</span>
         </div>
 
+        {error && <p className={styles.error}>⚠ {error}</p>}
+
         <button
           className={styles.payButton}
           onClick={handlePay}
@@ -68,7 +72,7 @@ const SummaryPage = () => {
 
         <button
           className={styles.backBtn}
-          onClick={() => navigate("/checkout")}
+          onClick={() => navigate(-1)}
           disabled={loading}
         >
           Modificar datos

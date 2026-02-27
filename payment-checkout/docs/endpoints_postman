@@ -1,0 +1,336 @@
+{
+  "info": {
+    "name": "Payment Checkout API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get Featured Product",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products/featured",
+            "description": "Returns the featured product with its current stock"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"product\": {\n    \"id\": \"uuid-prod-001\",\n    \"name\": \"Producto de prueba\",\n    \"description\": \"Descripción del producto\",\n    \"price\": 50000,\n    \"imageUrl\": \"https://example.com/image.jpg\"\n  },\n  \"stock\": 5\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Product By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products/:id",
+            "description": "Returns a specific product by ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-prod-001\",\n  \"name\": \"Producto de prueba\",\n  \"description\": \"Descripción del producto\",\n  \"price\": 50000,\n  \"imageUrl\": \"https://example.com/image.jpg\",\n  \"stock\": 5\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Product not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Product Stock",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/products/:id/stock",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 4\n}"
+            },
+            "description": "Updates the stock of a product after a successful transaction"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-prod-001\",\n  \"stock\": 4\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/customers",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Perez\",\n  \"phone\": \"3001234567\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\"\n}"
+            },
+            "description": "Creates a new customer with delivery information"
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"id\": \"uuid-cust-001\",\n  \"name\": \"Juan Perez\",\n  \"phone\": \"3001234567\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\",\n  \"createdAt\": \"2026-02-26T00:00:00.000Z\"\n}"
+            },
+            {
+              "name": "Bad Request",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"statusCode\": 400,\n  \"message\": [\"name should not be empty\", \"phone must be a valid phone number\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Customer By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/customers/:id",
+            "description": "Returns a specific customer by ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-cust-001\",\n  \"name\": \"Juan Perez\",\n  \"phone\": \"3001234567\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\",\n  \"createdAt\": \"2026-02-26T00:00:00.000Z\"\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Customer not found\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/transactions",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"uuid-prod-001\",\n  \"amount\": 61000,\n  \"customerData\": {\n    \"name\": \"Juan Perez\",\n    \"phone\": \"3001234567\",\n    \"address\": \"Calle 10 # 43-25\",\n    \"city\": \"Medellín\"\n  }\n}"
+            },
+            "description": "Creates a new transaction in PENDING status and returns a transaction ID"
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"transactionId\": \"uuid-txn-001\",\n  \"reference\": \"REF-1234567890\",\n  \"status\": \"PENDING\",\n  \"amount\": 61000,\n  \"createdAt\": \"2026-02-26T00:00:00.000Z\"\n}"
+            },
+            {
+              "name": "Bad Request",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"statusCode\": 400,\n  \"message\": [\"productId must be a UUID\", \"amount must be a positive number\"]\n}"
+            },
+            {
+              "name": "Product Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Product not found\"\n}"
+            },
+            {
+              "name": "Out of Stock",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"statusCode\": 409,\n  \"message\": \"Product out of stock\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Transaction By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/transactions/:id",
+            "description": "Returns a specific transaction by ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-txn-001\",\n  \"reference\": \"REF-1234567890\",\n  \"status\": \"APPROVED\",\n  \"amount\": 61000,\n  \"gatewayTransactionId\": \"gateway-txn-id\",\n  \"product\": {\n    \"id\": \"uuid-prod-001\",\n    \"name\": \"Producto de prueba\"\n  },\n  \"customer\": {\n    \"id\": \"uuid-cust-001\",\n    \"name\": \"Juan Perez\"\n  },\n  \"createdAt\": \"2026-02-26T00:00:00.000Z\",\n  \"updatedAt\": \"2026-02-26T00:01:00.000Z\"\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Transaction not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Transaction Status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/transactions/:id",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\",\n  \"gatewayTransactionId\": \"gateway-txn-id-001\"\n}"
+            },
+            "description": "Updates the transaction status after gateway processing. Valid statuses: APPROVED, FAILED"
+          },
+          "response": [
+            {
+              "name": "Success APPROVED",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-txn-001\",\n  \"status\": \"APPROVED\",\n  \"gatewayTransactionId\": \"gateway-txn-id-001\",\n  \"updatedAt\": \"2026-02-26T00:01:00.000Z\"\n}"
+            },
+            {
+              "name": "Success FAILED",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-txn-001\",\n  \"status\": \"FAILED\",\n  \"gatewayTransactionId\": \"gateway-txn-id-001\",\n  \"updatedAt\": \"2026-02-26T00:01:00.000Z\"\n}"
+            },
+            {
+              "name": "Invalid Status",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"statusCode\": 400,\n  \"message\": \"Invalid status value\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Deliveries",
+      "item": [
+        {
+          "name": "Create Delivery",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/deliveries",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transactionId\": \"uuid-txn-001\",\n  \"customerId\": \"uuid-cust-001\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\"\n}"
+            },
+            "description": "Creates a delivery record after a successful transaction"
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"id\": \"uuid-del-001\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\",\n  \"status\": \"PENDING\",\n  \"transactionId\": \"uuid-txn-001\",\n  \"customerId\": \"uuid-cust-001\",\n  \"createdAt\": \"2026-02-26T00:01:00.000Z\"\n}"
+            },
+            {
+              "name": "Bad Request",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"statusCode\": 400,\n  \"message\": [\"transactionId must be a UUID\", \"address should not be empty\"]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Delivery By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/deliveries/:id",
+            "description": "Returns a specific delivery by ID"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-del-001\",\n  \"address\": \"Calle 10 # 43-25\",\n  \"city\": \"Medellín\",\n  \"status\": \"PENDING\",\n  \"transactionId\": \"uuid-txn-001\",\n  \"customerId\": \"uuid-cust-001\",\n  \"createdAt\": \"2026-02-26T00:01:00.000Z\"\n}"
+            },
+            {
+              "name": "Not Found",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Delivery not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Delivery Status",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/deliveries/:id",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"SHIPPED\"\n}"
+            },
+            "description": "Updates delivery status. Valid statuses: PENDING, SHIPPED, DELIVERED"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"id\": \"uuid-del-001\",\n  \"status\": \"SHIPPED\",\n  \"updatedAt\": \"2026-02-26T00:02:00.000Z\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

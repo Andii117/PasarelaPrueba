@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import type { CheckoutState } from "../../types";
 
 const savedState = localStorage.getItem("checkoutState");
@@ -6,6 +7,9 @@ const initialState: CheckoutState = savedState
   ? JSON.parse(savedState)
   : {
       currentStep: 1,
+      productId: "",
+      productName: "",
+      productPrice: 0,
       cardNumber: "",
       cardHolder: "",
       cardExpiry: "",
@@ -33,6 +37,9 @@ const checkoutSlice = createSlice({
       localStorage.removeItem("checkoutState");
       return {
         currentStep: 1,
+        productId: "",
+        productName: "",
+        productPrice: 0,
         cardNumber: "",
         cardHolder: "",
         cardExpiry: "",

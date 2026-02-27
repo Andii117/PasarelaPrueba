@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import SummaryPage from "./pages/SummaryPage";
+import PaymentStatusPage from "./pages/PaymentStatusPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<ProductPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/status" element={<PaymentStatusPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

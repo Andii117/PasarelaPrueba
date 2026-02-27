@@ -7,6 +7,9 @@ const initialState: CheckoutState = savedState
   ? JSON.parse(savedState)
   : {
       currentStep: 1,
+      productId: "",
+      productName: "",
+      productPrice: 0,
       cardNumber: "",
       cardHolder: "",
       cardExpiry: "",
@@ -34,6 +37,9 @@ const checkoutSlice = createSlice({
       localStorage.removeItem("checkoutState");
       return {
         currentStep: 1,
+        productId: "",
+        productName: "",
+        productPrice: 0,
         cardNumber: "",
         cardHolder: "",
         cardExpiry: "",

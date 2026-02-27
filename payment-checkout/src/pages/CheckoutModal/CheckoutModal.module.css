@@ -1,7 +1,21 @@
-.page {
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal {
   background: #ebebeb;
-  min-height: 100vh;
-  padding-bottom: 32px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .header {
@@ -10,9 +24,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 16px 16px 0 0;
 }
 
-.backBtn {
+.headerTitle {
+  color: #fff;
+  font-size: 17px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.closeBtn {
   background: none;
   border: none;
   color: #fff;
@@ -22,15 +44,8 @@
   padding: 0;
 }
 
-.backBtn:hover {
+.closeBtn:hover {
   opacity: 0.8;
-}
-
-.headerTitle {
-  color: #fff;
-  font-size: 17px;
-  margin: 0;
-  font-weight: 600;
 }
 
 .container {

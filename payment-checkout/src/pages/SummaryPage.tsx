@@ -70,7 +70,7 @@ const SummaryPage = () => {
           onClick={() => navigate("/checkout")}
           disabled={loading}
         >
-          ← Modificar datos
+          Modificar datos
         </button>
       </div>
     </div>

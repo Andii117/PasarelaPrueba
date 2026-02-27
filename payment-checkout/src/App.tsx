@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-import ProductPage from "./pages/ProductPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import SummaryPage from "./pages/SummaryPage";
-import PaymentStatusPage from "./pages/PaymentStatusPage";
+import ProductPage from "./pages/ProductPage/ProductPage";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
+import SummaryPage from "./pages/SummaryPage/SummaryPage";
+import PaymentStatusPage from "./pages/PaymentStatusPage/PaymentStatusPage";
 
 function App() {
   return (

@@ -4,10 +4,14 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string;
+  stock: number;
 }
 
 export interface CheckoutState {
   currentStep: number;
+  productId: string;
+  productName: string;
+  productPrice: number;
   cardNumber: string;
   cardHolder: string;
   cardExpiry: string;
@@ -23,9 +27,8 @@ export interface TransactionState {
   status: "IDLE" | "PENDING" | "APPROVED" | "FAILED";
 }
 
-export interface ProductState {
-  product: Product | null;
-  stock: number;
+export interface MultiProductState {
+  products: Product[];
   loading: boolean;
   error: string | null;
 }

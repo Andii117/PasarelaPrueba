@@ -1,37 +1,62 @@
 # Payment Checkout App
 
-Full-stack e-commerce checkout application built with React + Redux (Frontend) and NestJS (Backend), integrated with a payment gateway for credit card processing.
+A full-stack e-commerce checkout application that allows customers to browse products, enter payment and delivery information, and process credit card transactions through the Wompi payment gateway.
 
 ---
 
-## 🚀 Tech Stack
+## 📋 Table of Contents
 
-### Frontend
-
-- React 18 + TypeScript
-- Vite
-- Redux Toolkit + React Redux
-- React Router DOM
-- Axios
-
-### Backend
-
-- NestJS + TypeScript
-- PostgreSQL
-- TypeORM
-- Jest
+- [About the Project](#about-the-project)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Data Model](#data-model)
+- [API Endpoints](#api-endpoints)
+- [Tests](#tests)
+- [Security](#security)
+- [Contact](#contact)
 
 ---
 
-## 📋 Prerequisites
+## 📌 About the Project
 
-- Node.js v18+
-- npm v9+
-- PostgreSQL 14+
+This application implements a 5-step payment onboarding flow:
+
+Product Page (/) → Browse products with stock
+↓
+
+Checkout Page (/checkout) → Credit card + Delivery info
+↓
+
+Summary Page (/summary) → Payment breakdown + Confirm
+↓
+
+Payment Status (/status) → Result (approved/declined)
+↓
+
+Product Page (/) → Updated stock
+
+**Tech Stack**
+
+| Layer    | Technologies                                           |
+| -------- | ------------------------------------------------------ |
+| Frontend | React 18, TypeScript, Vite, Redux Toolkit, CSS Modules |
+| Backend  | NestJS, TypeScript, PostgreSQL, TypeORM                |
+| Testing  | Jest                                                   |
+| Gateway  | Wompi (Sandbox)                                        |
 
 ---
 
-## 🛠️ Installation & Setup
+## ⚙️ Installation
+
+### Requirements
+
+Node.js v18+
+
+npm v9+
+
+PostgreSQL 14+
 
 ### Frontend
 
@@ -41,45 +66,49 @@ npm install
 cp .env.example .env
 npm run dev
 
+ Usage
+Once both services are running:
 
-### Backend
-cd payment-api
-npm install
-cp .env.example .env
-npm run start:dev
+Frontend: http://localhost:5173
 
-### Environment Variables
-### .env
-VITE_API_URL=http://localhost:3001
-VITE_GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
-VITE_PUB_KEY=pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7
 
-### Backend .env
-PORT=3001
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=payment_checkout
-GATEWAY_PRIVATE_KEY=prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg
-GATEWAY_PUBLIC_KEY=pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7
-GATEWAY_INTEGRITY_KEY=stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp
-GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
+The app runs entirely in Sandbox mode — no real money transactions are processed.
 
-### APP Flow
-1. Product Page (/)
-      ↓
-2. Checkout Page (/checkout) — Credit card + Delivery info
-      ↓
-3. Summary Page (/summary) — Payment breakdown + Confirm
-      ↓
-4. Payment Status (/status) — Result (approved/declined)
-      ↓
-5. Product Page (/) — Updated stock
+Import docs/postman_collection.json into Postman to test all API endpoints.
 
-## Data Model
+### Project Structure
 
-##Product
+payment-checkout/
+├── src/
+│   ├── pages/
+│   │   ├── ProductPage/
+│   │   │   ├── index.tsx
+│   │   │   └── ProductPage.module.css
+│   │   ├── CheckoutPage/
+│   │   │   ├── index.tsx
+│   │   │   └── CheckoutPage.module.css
+│   │   ├── SummaryPage/
+│   │   │   ├── index.tsx
+│   │   │   └── SummaryPage.module.css
+│   │   └── PaymentStatusPage/
+│   │       ├── index.tsx
+│   │       └── PaymentStatusPage.module.css
+│   ├── store/
+│   │   ├── store.ts
+│   │   └── slices/
+│   │       ├── productSlice.ts
+│   │       ├── checkoutSlice.ts
+│   │       └── transactionSlice.ts
+│   └── types/
+│       └── index.ts
+
+
+```
+
+### Data Model
+
+### Products
+
 | Field       | Type      | Description         |
 | ----------- | --------- | ------------------- |
 | id          | UUID      | Primary key         |
@@ -91,6 +120,7 @@ GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
 | createdAt   | TIMESTAMP | Creation date       |
 
 ### Customers
+
 | Field     | Type      | Description      |
 | --------- | --------- | ---------------- |
 | id        | UUID      | Primary key      |
@@ -101,6 +131,7 @@ GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
 | createdAt | TIMESTAMP | Creation date    |
 
 ### Transactions
+
 | Field                | Type      | Description               |
 | -------------------- | --------- | ------------------------- |
 | id                   | UUID      | Primary key               |
@@ -114,6 +145,7 @@ GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
 | updatedAt            | TIMESTAMP | Last update               |
 
 ### Deliveries
+
 | Field         | Type      | Description                 |
 | ------------- | --------- | --------------------------- |
 | id            | UUID      | Primary key                 |
@@ -124,100 +156,25 @@ GATEWAY_URL=https://api-sandbox.co.uat.wompi.dev/v1
 | customerId    | UUID      | FK → Customers              |
 | createdAt     | TIMESTAMP | Creation date               |
 
-### API Endpoints
-### Products
+### Tests
 
-| Method | Endpoint            | Description                     |
-| ------ | ------------------- | ------------------------------- |
-| GET    | /products/featured  | Get featured product with stock |
-| GET    | /products/:id       | Get product by ID               |
-| PATCH  | /products/:id/stock | Update product stock            |
-
-### Customers
-| Method | Endpoint       | Description        |
-| ------ | -------------- | ------------------ |
-| POST   | /customers     | Create customer    |
-| GET    | /customers/:id | Get customer by ID |
-
-
-### Transactions
-| Method | Endpoint          | Description                  |
-| ------ | ----------------- | ---------------------------- |
-| POST   | /transactions     | Create transaction (PENDING) |
-| GET    | /transactions/:id | Get transaction by ID        |
-| PATCH  | /transactions/:id | Update transaction status    |
-
-### Deliveries
-| Method | Endpoint        | Description            |
-| ------ | --------------- | ---------------------- |
-| POST   | /deliveries     | Create delivery        |
-| GET    | /deliveries/:id | Get delivery by ID     |
-| PATCH  | /deliveries/:id | Update delivery status |
-
-
-### Unit Tests
-
-# Frontend
+```bash
 cd payment-checkout
 npm run test
 npm run test:coverage
 
-# Backend
-cd payment-api
-npm run test
-npm run test:cov
 
-### Project Structure
-payment-checkout/
-├── src/
-│   ├── pages/
-│   │   ├── ProductPage.tsx
-│   │   ├── CheckoutPage.tsx
-│   │   ├── SummaryPage.tsx
-│   │   └── PaymentStatusPage.tsx
-│   ├── store/
-│   │   ├── store.ts
-│   │   └── slices/
-│   │       ├── productSlice.ts
-│   │       ├── checkoutSlice.ts
-│   │       └── transactionSlice.ts
-│   ├── services/
-│   │   ├── apiService.ts
-│   │   └── gatewayService.ts
-│   └── types/
-│       └── index.ts
+Coverage results are available in /coverage after running the commands above. Target: 80%+ coverage.
 
+###  Contact & Support
+Harold Andres Jara Granados
+For questions or support regarding this project, please open an issue in the repository.
 
-### Backend
-payment-api/
-├── src/
-│   ├── products/
-│   ├── customers/
-│   ├── transactions/
-│   ├── deliveries/
-│   └── gateway/
-
-### Postman Endpoints
-- Encontrara un archivo en la carpeta docs/ para copiar
-
-## 🔒 Security
-
-- Sensitive data handled via environment variables
-- Card data tokenized before processing, never stored raw
-- HTTPS enforced in production
-- Security headers configured (OWASP alignment)
-
----
-
-## 📌 Considerations
-
-- Payment gateway runs in Sandbox mode — no real money transactions
-- Database seeded with dummy products on startup
-- App state persisted in localStorage for session recovery on refresh
-- Branches and PRs created per feature following Git Flow
-
----
-
-
-### Author Harold Andres Jara Granados
+### 📎 Additional Information
+| Item        | Detail                         |
+| ----------- | ------------------------------ |
+| Version     | 1.0.0                          |
+| Created     | February 2026                  |
+| License     | MIT                            |
+| Environment | Sandbox — no real transactions |
 ```

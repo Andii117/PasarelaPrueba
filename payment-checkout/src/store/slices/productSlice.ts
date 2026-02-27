@@ -1,14 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { ProductState } from "../../types";
-import { apiService } from "../../services/apiService";
-
-export const fetchProduct = createAsyncThunk("product/fetch", async () => {
-  return await apiService.getProduct();
-});
 
 const initialState: ProductState = {
-  product: null,
-  stock: 0,
+  product: {
+    id: "PROD-001",
+    name: "Producto de prueba",
+    description: "Esta es una descripción del producto de prueba.",
+    price: 50000,
+    imageUrl: "https://via.placeholder.com/390x220",
+  },
+  stock: 5,
   loading: false,
   error: null,
 };
@@ -20,22 +21,6 @@ const productSlice = createSlice({
     decrementStock: (state) => {
       state.stock = Math.max(0, state.stock - 1);
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProduct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchProduct.fulfilled, (state, action) => {
-        state.loading = false;
-        state.product = action.payload.product;
-        state.stock = action.payload.stock;
-      })
-      .addCase(fetchProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Error al cargar producto";
-      });
   },
 });
 

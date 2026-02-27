@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductPage = () => {
+  const navigate = useNavigate();
+
   const product = {
     name: "Producto de prueba",
     description: "Esta es una descripción del producto de prueba.",
@@ -23,7 +26,9 @@ const ProductPage = () => {
           <span style={styles.stock}>Stock: {stock} unidades</span>
         </div>
         {stock > 0 ? (
-          <button style={styles.button}>💳 Pagar con tarjeta de crédito</button>
+          <button style={styles.button} onClick={() => navigate("/checkout")}>
+            💳 Pagar con tarjeta de crédito
+          </button>
         ) : (
           <div style={styles.outOfStock}>Producto agotado</div>
         )}

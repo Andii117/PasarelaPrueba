@@ -9,6 +9,7 @@ const detectBrand = (number: string): "VISA" | "MASTERCARD" | "" => {
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     cardNumber: "",
     cardHolder: "",
@@ -44,7 +45,7 @@ const CheckoutPage = () => {
 
   const handleContinue = () => {
     if (!validate()) return;
-    alert("Formulario válido - continuar a resumen");
+    navigate("/summary");
   };
 
   const field = (

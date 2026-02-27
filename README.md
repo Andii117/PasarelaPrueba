@@ -6,10 +6,10 @@ Prueba de pasarela de pago
 
 payment-checkout/
 ├── src/
-│ ├── App.tsx ← reemplazar con nuestro código
+│ ├── App.tsx
 │ ├── main.tsx ← punto de entrada (no tocar)
 │ └── vite-env.d.ts ← tipos de Vite (no tocar)
 ├── index.html
 ├── vite.config.ts
-├── .env ← crear este archivo manualmente
+├── .env
 └── package.json

@@ -1,0 +1,262 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal {
+  background: #ebebeb;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header {
+  background: #3d5afe;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 16px 16px 0 0;
+}
+
+.headerTitle {
+  color: #fff;
+  font-size: 17px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  width: 32px;
+  padding: 0;
+}
+
+.closeBtn:hover {
+  opacity: 0.8;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.productSummary {
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.productSummaryLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productSummaryIcon {
+  font-size: 28px;
+}
+
+.productSummaryName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.productSummaryPrice {
+  font-size: 15px;
+  color: #3d5afe;
+  font-weight: 600;
+  margin: 2px 0 0;
+}
+
+.productSummaryBadge {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sectionIcon {
+  font-size: 18px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+.brandIcon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.brandIconVisa {
+  color: #1a1f71;
+}
+
+.brandIconMastercard {
+  width: 40px;
+  height: 26px;
+}
+
+.fieldGroup {
+  margin-bottom: 14px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 11px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1.5px solid #e0e0e0;
+  box-sizing: border-box;
+  outline: none;
+  background: #fafafa;
+}
+
+.input:focus {
+  border-color: #3d5afe;
+}
+
+.inputError {
+  border-color: #f44336;
+}
+
+.errorText {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.rowItem {
+  flex: 1;
+}
+
+.securityInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #e8f5e9;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.securityText {
+  font-size: 12px;
+  color: #2e7d32;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.continueBtn {
+  width: 100%;
+  padding: 15px 0;
+  font-size: 16px;
+  font-weight: 600;
+  background: #3d5afe;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.continueBtn:hover {
+  opacity: 0.9;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.checkbox {
+  margin-top: 2px;
+  accent-color: #3d5afe;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.link {
+  color: #3d5afe;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.continueBtnDisabled {
+  background: #b0bec5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

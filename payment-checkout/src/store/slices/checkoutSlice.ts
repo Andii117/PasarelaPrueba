@@ -18,6 +18,7 @@ const initialState: CheckoutState = savedState
       deliveryAddress: "",
       deliveryCity: "",
       deliveryPhone: "",
+      clientIp: "",
     };
 
 const checkoutSlice = createSlice({
@@ -32,6 +33,10 @@ const checkoutSlice = createSlice({
       const updated = { ...state, ...action.payload };
       localStorage.setItem("checkoutState", JSON.stringify(updated));
       return updated;
+    },
+    setClientIp: (state, action: PayloadAction<string>) => {
+      state.clientIp = action.payload;
+      localStorage.setItem("checkoutState", JSON.stringify(state));
     },
     resetCheckout: () => {
       localStorage.removeItem("checkoutState");
@@ -48,10 +53,12 @@ const checkoutSlice = createSlice({
         deliveryAddress: "",
         deliveryCity: "",
         deliveryPhone: "",
+        clientIp: "",
       };
     },
   },
 });
 
-export const { setStep, setFormData, resetCheckout } = checkoutSlice.actions;
+export const { setStep, setFormData, setClientIp, resetCheckout } =
+  checkoutSlice.actions;
 export default checkoutSlice.reducer;

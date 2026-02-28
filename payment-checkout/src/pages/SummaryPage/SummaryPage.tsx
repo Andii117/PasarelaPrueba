@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import type { RootState, AppDispatch } from "../../store/store";
 import { setTransaction } from "../../store/slices/transactionSlice";
 import { decrementStock } from "../../store/slices/productSlice";
@@ -8,7 +9,7 @@ import styles from "./SummaryPage.module.css";
 
 const BASE_FEE = 3000;
 const DELIVERY_FEE = 8000;
-const API_URL = "http://localhost:3001";
+const API_URL = "http://localhost:3000";
 
 const SummaryPage = () => {
   const navigate = useNavigate();
@@ -19,18 +20,51 @@ const SummaryPage = () => {
 
   const total = checkout.productPrice + BASE_FEE + DELIVERY_FEE;
 
-  const handlePay = () => {
+  const handlePay = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+
+    const transactionData = {
+      currentStep: 3,
+      productId: checkout.productId,
+      productName: checkout.productName,
+      productPrice: checkout.productPrice,
+      cardNumber: checkout.cardNumber,
+      cardHolder: checkout.cardHolder,
+      cardExpiry: checkout.cardExpiry,
+      cardCvv: checkout.cardCvv,
+      deliveryName: checkout.deliveryName,
+      deliveryAddress: checkout.deliveryAddress,
+      deliveryCity: checkout.deliveryCity,
+      deliveryPhone: checkout.deliveryPhone,
+      clientIp: checkout.clientIp,
+      deliveryEmail: checkout.deliveryEmail,
+    };
+
+    try {
+      const response = await axios.post(
+        `${API_URL}/transactions/createTransaction`,
+        transactionData,
+      );
+      const transactionId = response.data;
+
+      console.log("Transacción aprobada con ID:", transactionId);
       dispatch(
-        setTransaction({ transactionId: "TXN-FAKE-001", status: "APPROVED" }),
+        setTransaction({
+          transactionId: transactionId,
+          status: "APPROVED",
+        }),
       );
       dispatch(decrementStock(checkout.productId));
+
       navigate("/status", {
-        state: { status: "APPROVED", transactionId: "TXN-FAKE-001" },
+        state: { status: "APPROVED", transactionId: transactionId },
       });
-    }, 2000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Error al procesar el pago");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

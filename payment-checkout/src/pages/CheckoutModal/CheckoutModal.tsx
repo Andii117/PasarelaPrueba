@@ -34,6 +34,7 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
     deliveryAddress: saved.deliveryAddress,
     deliveryCity: saved.deliveryCity,
     deliveryPhone: saved.deliveryPhone,
+    deliveryEmail: saved.deliveryEmail,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -77,6 +78,8 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
     if (!form.deliveryCity.trim()) e.deliveryCity = "Ciudad requerida";
     if (!/^\d{7,10}$/.test(form.deliveryPhone))
       e.deliveryPhone = "Teléfono inválido";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.deliveryEmail))
+      e.deliveryEmail = "Email inválido";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -139,6 +142,7 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
               <h2 className={styles.sectionTitle}>Datos de entrega</h2>
             </div>
             {field("Nombre completo", "deliveryName", "text", "Ej: Juan Pérez")}
+            {field("Email", "deliveryEmail", "email", "Ej: correo@gmail.com")}
             {field(
               "Dirección",
               "deliveryAddress",
@@ -213,15 +217,16 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
                 className={styles.checkbox}
               />
               <span>
-                Acepto los{" "}
+                Acepto haber leído los{" "}
                 <a
                   href="https://wompi.com/terminos-y-condiciones"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.link}
                 >
-                  Términos y Condiciones
+                  Reglamentos y política de privacidad
                 </a>
+                para hacer este pago
               </span>
             </label>
 
@@ -233,14 +238,14 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
                 className={styles.checkbox}
               />
               <span>
-                Acepto el{" "}
+                Acepto la{" "}
                 <a
                   href="https://wompi.com/tratamiento-de-datos"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.link}
                 >
-                  Tratamiento de Datos Personales
+                  autorización para la administración de datos personales
                 </a>
               </span>
             </label>

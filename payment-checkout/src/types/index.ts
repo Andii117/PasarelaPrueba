@@ -21,6 +21,7 @@ export interface CheckoutState {
   deliveryCity: string;
   deliveryPhone: string;
   clientIp: string;
+  deliveryEmail: string;
 }
 
 export interface TransactionState {

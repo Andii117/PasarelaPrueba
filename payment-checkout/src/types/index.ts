@@ -20,6 +20,7 @@ export interface CheckoutState {
   deliveryAddress: string;
   deliveryCity: string;
   deliveryPhone: string;
+  clientIp: string;
 }
 
 export interface TransactionState {

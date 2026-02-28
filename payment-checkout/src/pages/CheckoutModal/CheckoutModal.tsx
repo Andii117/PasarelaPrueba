@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
-import { setFormData, setStep } from "../../store/slices/checkoutSlice";
 import { FaCcVisa } from "react-icons/fa";
 import styles from "./CheckoutModal.module.css";
+import {
+  setFormData,
+  setStep,
+  setClientIp,
+} from "../../store/slices/checkoutSlice";
+import { ipService } from "../../services/ipServices";
 
 const detectBrand = (number: string): "VISA" | "MASTERCARD" | "" => {
   if (/^4/.test(number)) return "VISA";
@@ -32,7 +37,16 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptData, setAcceptData] = useState(false);
   const brand = detectBrand(form.cardNumber.replace(/\s/g, ""));
+
+  useEffect(() => {
+    ipService.getClientIp().then((ip) => {
+      setClientIp(ip);
+      dispatch(setClientIp(ip));
+    });
+  }, []);
 
   const handleChange = (key: keyof typeof form, value: string) => {
     let finalValue = value;
@@ -92,6 +106,8 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
       {errors[key] && <span className={styles.errorText}>⚠ {errors[key]}</span>}
     </div>
   );
+
+  const bothAccepted = acceptTerms && acceptData;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -188,7 +204,53 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
             </p>
           </div>
 
-          <button className={styles.continueBtn} onClick={handleContinue}>
+          <div className={styles.checkboxGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className={styles.checkbox}
+              />
+              <span>
+                Acepto los{" "}
+                <a
+                  href="https://wompi.com/terminos-y-condiciones"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Términos y Condiciones
+                </a>
+              </span>
+            </label>
+
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={acceptData}
+                onChange={(e) => setAcceptData(e.target.checked)}
+                className={styles.checkbox}
+              />
+              <span>
+                Acepto el{" "}
+                <a
+                  href="https://wompi.com/tratamiento-de-datos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Tratamiento de Datos Personales
+                </a>
+              </span>
+            </label>
+          </div>
+
+          <button
+            className={`${styles.continueBtn} ${!bothAccepted ? styles.continueBtnDisabled : ""}`}
+            onClick={handleContinue}
+            disabled={!bothAccepted}
+          >
             Confirmar compra
           </button>
         </div>

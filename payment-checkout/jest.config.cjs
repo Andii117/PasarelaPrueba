@@ -1,12 +1,11 @@
-import type { Config } from "jest";
-
-const config: Config = {
+/** @type {import('jest').Config} */
+const config = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["@testing-library/jest-dom"],
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   moduleNameMapper: {
     "\\.(css|module\\.css)$": "identity-obj-proxy",
-    "\\.(jpg|jpeg|png|gif|svg|webp)$": "<rootDir>/__mocks__/fileMock.ts",
+    "\\.(jpg|jpeg|png|gif|svg|webp)$": "<rootDir>/__mocks__/fileMock.js",
   },
   transform: {
     "^.+\\.tsx?$": [
@@ -16,19 +15,15 @@ const config: Config = {
         tsconfig: {
           jsx: "react-jsx",
         },
-        globals: {
-          "import.meta": {
-            env: {
-              VITE_API_URL: "http://localhost:3001",
-            },
-          },
-        },
       },
     ],
   },
+  // Permite que Jest transforme paquetes ESM de node_modules
+  transformIgnorePatterns: ["node_modules/(?!(react-icons|@testing-library)/)"],
+  roots: ["<rootDir>/src"],
   collectCoverage: true,
   coverageReporters: ["text", "lcov"],
   testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
 };
 
-export default config;
+module.exports = config;

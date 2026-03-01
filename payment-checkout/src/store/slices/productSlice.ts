@@ -19,7 +19,6 @@ export const fetchProducts = createAsyncThunk("product/fetchAll", async () => {
   const response = await axios.get(
     "http://localhost:3000/products/getAllProducts",
   );
-  console.log("Productos obtenidos:", response.data);
   return response.data.map((p: any) => ({
     ...p,
     imageUrl: p.imageURL,

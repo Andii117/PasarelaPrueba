@@ -26,15 +26,17 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
   const saved = useSelector((state: RootState) => state.checkout);
 
   const [form, setForm] = useState({
-    cardNumber: saved.cardNumber,
-    cardHolder: saved.cardHolder,
-    cardExpiry: saved.cardExpiry,
-    cardCvv: saved.cardCvv,
-    deliveryName: saved.deliveryName,
-    deliveryAddress: saved.deliveryAddress,
-    deliveryCity: saved.deliveryCity,
-    deliveryPhone: saved.deliveryPhone,
-    deliveryEmail: saved.deliveryEmail,
+    cardNumber: saved.cardNumber || "",
+    cardHolder: saved.cardHolder || "",
+    cardExpiry: saved.cardExpiry || "",
+    cardCvv: saved.cardCvv || "",
+    deliveryName: saved.deliveryName || "",
+    deliveryAddress: saved.deliveryAddress || "",
+    deliveryCity: saved.deliveryCity || "",
+    deliveryPhone: saved.deliveryPhone || "",
+    deliveryEmail: saved.deliveryEmail || "",
+    documentType: saved.documentType || "CC",
+    documentNumber: saved.documentNumber || "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -44,20 +46,18 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
 
   useEffect(() => {
     ipService.getClientIp().then((ip) => {
-      setClientIp(ip);
       dispatch(setClientIp(ip));
     });
-  }, []);
+  }, [dispatch]);
 
   const handleChange = (key: keyof typeof form, value: string) => {
     let finalValue = value;
     if (key === "cardExpiry") {
       const digits = value.replace(/\D/g, "");
-      if (digits.length <= 2) {
-        finalValue = digits;
-      } else {
-        finalValue = `${digits.slice(0, 2)}/${digits.slice(2, 4)}`;
-      }
+      finalValue =
+        digits.length <= 2
+          ? digits
+          : `${digits.slice(0, 2)}/${digits.slice(2, 4)}`;
     }
     const updated = { ...form, [key]: finalValue };
     setForm(updated);
@@ -80,6 +80,7 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
       e.deliveryPhone = "Teléfono inválido";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.deliveryEmail))
       e.deliveryEmail = "Email inválido";
+    if (!form.documentNumber.trim()) e.documentNumber = "Documento requerido";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -142,6 +143,33 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
               <h2 className={styles.sectionTitle}>Datos de entrega</h2>
             </div>
             {field("Nombre completo", "deliveryName", "text", "Ej: Juan Pérez")}
+
+            <div className={styles.row}>
+              <div className={styles.rowItem} style={{ flex: 1 }}>
+                <div className={styles.fieldGroup}>
+                  <label className={styles.label}>Tipo</label>
+                  <select
+                    className={styles.input}
+                    value={form.documentType}
+                    onChange={(e) =>
+                      handleChange("documentType", e.target.value)
+                    }
+                  >
+                    <option value="CC">CC - Cedula de ciudadania</option>
+                    <option value="CE">CE - Cedula extranjera</option>
+                  </select>
+                </div>
+              </div>
+              <div className={styles.rowItem} style={{ flex: 2 }}>
+                {field(
+                  "Número de documento",
+                  "documentNumber",
+                  "tel",
+                  "12345678",
+                )}
+              </div>
+            </div>
+
             {field("Email", "deliveryEmail", "email", "Ej: correo@gmail.com")}
             {field(
               "Dirección",
@@ -226,7 +254,6 @@ const CheckoutModal = ({ onClose, onConfirm }: CheckoutModalProps) => {
                 >
                   Reglamentos y política de privacidad
                 </a>
-                para hacer este pago
               </span>
             </label>
 

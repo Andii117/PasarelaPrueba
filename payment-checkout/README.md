@@ -151,6 +151,30 @@ cd payment-checkout
 npm run test
 npm run test:coverage
 
+### información del % de coverage
+-------------------------------|---------|----------|---------|---------|-------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------------------|---------|----------|---------|---------|-------------------
+All files                      |      96 |    81.96 |   87.87 |   96.63 |
+ pages/PaymentStatusPage       |   96.96 |    89.74 |    87.5 |   96.66 |
+  PaymentStatusPage.module.css |       0 |        0 |       0 |       0 |
+  PaymentStatusPage.tsx        |   96.96 |    89.74 |    87.5 |   96.66 | 147
+ pages/SummaryPage             |   96.15 |    83.33 |      75 |      96 |
+  SummaryPage.module.css       |       0 |        0 |       0 |       0 |
+  SummaryPage.tsx              |   96.15 |    83.33 |      75 |      96 | 111
+ services                      |     100 |     62.5 |     100 |     100 |
+  apiService.ts                |     100 |       50 |     100 |     100 | 4
+  gatewayService.ts            |     100 |       50 |     100 |     100 | 4-5
+  ipServices.ts                |     100 |      100 |     100 |     100 |
+  transactionService.ts        |     100 |      100 |     100 |     100 |
+ store                         |     100 |      100 |     100 |     100 |
+  store.ts                     |     100 |      100 |     100 |     100 |
+ store/slices                  |    92.3 |     62.5 |   85.71 |   94.59 |
+  checkoutSlice.ts             |     100 |       50 |     100 |     100 | 6-36
+  productSlice.ts              |   83.33 |       75 |      75 |    87.5 | 19-22
+  transactionSlice.ts          |     100 |      100 |     100 |     100 |
+-------------------------------|---------|----------|---------|---------|-------------------
+
 
 Coverage results are available in /coverage after running the commands above. Target: 80%+ coverage.
 

@@ -7,7 +7,17 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    // Esta línea construye la ruta exacta al archivo sin errores de formato
     setupFiles: fileURLToPath(new URL("./src/setupTests.ts", import.meta.url)),
+    coverage: {
+      provider: "v8", // o 'istanbul'
+      reporter: ["text", "json", "html"],
+      // AQUÍ DEFINES EL MÍNIMO
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
+    },
   },
 });

@@ -39,6 +39,8 @@ const SummaryPage = () => {
       deliveryPhone: checkout.deliveryPhone,
       clientIp: checkout.clientIp,
       deliveryEmail: checkout.deliveryEmail,
+      documentType: checkout.documentType,
+      documentNumber: checkout.documentNumber,
     };
 
     try {
@@ -48,7 +50,8 @@ const SummaryPage = () => {
       );
       const transactionId = response.data;
 
-      console.log("Transacción aprobada con ID:", transactionId);
+      console.log("Transacción procesada con ID:", transactionId);
+
       dispatch(
         setTransaction({
           transactionId: transactionId,
@@ -61,6 +64,7 @@ const SummaryPage = () => {
         state: { status: "APPROVED", transactionId: transactionId },
       });
     } catch (err: any) {
+      console.error("Error en API:", err.response?.data);
       setError(err.response?.data?.message || "Error al procesar el pago");
     } finally {
       setLoading(false);

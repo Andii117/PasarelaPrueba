@@ -144,18 +144,6 @@ payment-checkout/
 | createdAt            | TIMESTAMP | Creation date             |
 | updatedAt            | TIMESTAMP | Last update               |
 
-### Deliveries
-
-| Field         | Type      | Description                 |
-| ------------- | --------- | --------------------------- |
-| id            | UUID      | Primary key                 |
-| address       | VARCHAR   | Delivery address            |
-| city          | VARCHAR   | City                        |
-| status        | ENUM      | PENDING, SHIPPED, DELIVERED |
-| transactionId | UUID      | FK → Transactions           |
-| customerId    | UUID      | FK → Customers              |
-| createdAt     | TIMESTAMP | Creation date               |
-
 ### Tests
 
 ```bash

@@ -50,8 +50,6 @@ const SummaryPage = () => {
       );
       const transactionId = response.data;
 
-      console.log("Transacción procesada con ID:", transactionId);
-
       dispatch(
         setTransaction({
           transactionId: transactionId,
